@@ -1,16 +1,23 @@
-'use client';
+"use client";
 
-import { Section, Cell, Image, List } from '@telegram-apps/telegram-ui';
-import { useTranslations } from 'next-intl';
+import { Section, Cell, Image, List } from "@telegram-apps/telegram-ui";
+import { useTranslations } from "next-intl";
 
-import { Link } from '@/components/Link/Link';
-import { LocaleSwitcher } from '@/components/LocaleSwitcher/LocaleSwitcher';
-import { Page } from '@/components/Page';
+import { Link } from "@/components/Link/Link";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher/LocaleSwitcher";
+import { Page } from "@/components/Page";
 
-import tonSvg from './_assets/ton.svg';
+import tonSvg from "./_assets/ton.svg";
+import { useFetchMe } from "@/hooks/useFetchMe";
+import { useEffect } from "react";
 
 export default function Home() {
-  const t = useTranslations('i18n');
+  const t = useTranslations("i18n");
+  const { user, loading, error, fetchMe } = useFetchMe();
+
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   return (
     <Page back={false}>
@@ -24,7 +31,7 @@ export default function Home() {
               before={
                 <Image
                   src={tonSvg.src}
-                  style={{ backgroundColor: '#007AFF' }}
+                  style={{ backgroundColor: "#007AFF" }}
                   alt="TON Logo"
                 />
               }
@@ -54,7 +61,7 @@ export default function Home() {
             </Cell>
           </Link>
         </Section>
-        <Section header={t('header')} footer={t('footer')}>
+        <Section header={t("header")} footer={t("footer")}>
           <LocaleSwitcher />
         </Section>
       </List>

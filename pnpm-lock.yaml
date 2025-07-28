@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@tanstack/react-query':
+        specifier: ^5.83.0
+        version: 5.83.0(react@18.3.1)
+      '@telegram-apps/init-data-node':
+        specifier: ^2.0.10
+        version: 2.0.10(typescript@5.5.2)
       '@telegram-apps/sdk-react':
         specifier: ^3.2.4
         version: 3.2.4(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.2)
@@ -510,11 +516,22 @@ packages:
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
+  '@tanstack/query-core@5.83.0':
+    resolution: {integrity: sha512-0M8dA+amXUkyz5cVUm/B+zSk3xkQAcuXuz5/Q/LveT4ots2rBpPTZOzd7yJa2Utsf8D2Upl5KyjhHRY+9lB/XA==}
+
+  '@tanstack/react-query@5.83.0':
+    resolution: {integrity: sha512-/XGYhZ3foc5H0VM2jLSD/NyBRIOK4q9kfeml4+0x2DlL6xVuAcVEW+hTlTapAmejObg0i3eNqhkr2dT+eciwoQ==}
+    peerDependencies:
+      react: ^18 || ^19
+
   '@telegram-apps/bridge@1.9.2':
     resolution: {integrity: sha512-SJLcNWLXhbbZr9MiqFH/g2ceuitSJKMxUIZysK4zUNyTUNuonrQG80Q/yrO+XiNbKUj8WdDNM86NBARhuyyinQ==}
 
   '@telegram-apps/bridge@2.8.2':
     resolution: {integrity: sha512-DpdvK1FUSklQFRaqV84rzhxUU/Pe6tVW497CtUfUZ87wenf/NY8Tvd5GONTJpAVb+H7wGcEcolielLOq1dSV5g==}
+
+  '@telegram-apps/init-data-node@2.0.10':
+    resolution: {integrity: sha512-hyJ0Qbc1Rqmog4OMS1neZo0PTBKDpOrXzy4EtEyXu8nAA8IK2iYJXnt3wRcvbYn6Qnkyh0wPEkIJmY8Hj3awPw==}
 
   '@telegram-apps/navigation@1.0.13':
     resolution: {integrity: sha512-TsUueB5LQp77GQHoMa93nq26Uw7GJjrFCPbyseMVU7aBBxAc+8CV2IYytRwcVp5sv/q7ThK5X4JaKn2V1yBHDQ==}
@@ -547,17 +564,26 @@ packages:
   '@telegram-apps/toolkit@2.1.2':
     resolution: {integrity: sha512-iAPjn7RNVEm4o+LPJg1mYv7eDOnCatVEvep7JT74awTt3tn8pVpTYeUbDIFBuOF2BRSIzUgPUYQgVhQcDFTpUg==}
 
+  '@telegram-apps/toolkit@2.1.3':
+    resolution: {integrity: sha512-LPUBL7hxQTOr+Dowyk9a1O82nQS4ja4+OYiYWtvqq5nNUHC6Gbbus0zGWCbFcj9CLnIzaeb5HWOg5iSnhoRcyg==}
+
   '@telegram-apps/transformers@1.2.2':
     resolution: {integrity: sha512-vvMwXckd1D7Ozc0h66PSUwF5QLrRV9HlGJFFeBuUex8QEk5mSPtsJkLiqB8aBbwuFDa91+TUSM/CxqPZO/e9YQ==}
 
   '@telegram-apps/transformers@2.2.3':
     resolution: {integrity: sha512-CFQqs7iXw6yuUMBzU1/W/EGW6RlrO0ZViJGFa0ButyHVxOnmM+d5vJmlAiqBFtnUutK9Q2GfbHZoGLW8qSs5YQ==}
 
+  '@telegram-apps/transformers@2.2.6':
+    resolution: {integrity: sha512-MMBRs3demeBT9Cd614KKZmak7eEyNdEbfu99a0SwEEJe2oIODjJLrUxrhUcAOc5wvTRfrKka27VXVgruauLhdg==}
+
   '@telegram-apps/types@1.2.1':
     resolution: {integrity: sha512-so4HLh7clur0YyMthi9KVIgWoGpZdXlFOuQjk3+Q5NAvJZ11nAheBSwPlGw/Ko92+zwvrSBE/lQyN2+p17RP+w==}
 
   '@telegram-apps/types@2.0.0':
     resolution: {integrity: sha512-yF499FJK82a2IDNDAQdrmVH3sgFZl/QFNdVZKgWpgtunIVJ1fres5wi9+4aUBRVIdQwZOZZqB/AOvYYuYXsq3Q==}
+
+  '@telegram-apps/types@2.0.3':
+    resolution: {integrity: sha512-pXh9BdnLZF3e2BGc4WL+RTRMAUpqKpaSP3Rs8rB4WyRwIoRSGWFKE4gtT/9m42LGixB8YVwdo/pJ+9XO765XEA==}
 
   '@tonconnect/isomorphic-eventsource@0.0.2':
     resolution: {integrity: sha512-B4UoIjPi0QkvIzZH5fV3BQLWrqSYABdrzZQSI9sJA9aA+iC0ohOzFwVVGXanlxeDAy1bcvPbb29f6sVUk0UnnQ==}
@@ -2495,6 +2521,13 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.6.3
 
+  '@tanstack/query-core@5.83.0': {}
+
+  '@tanstack/react-query@5.83.0(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.83.0
+      react: 18.3.1
+
   '@telegram-apps/bridge@1.9.2':
     dependencies:
       '@telegram-apps/signals': 1.1.1
@@ -2512,6 +2545,14 @@ snapshots:
       error-kid: 0.0.7
       mitt: 3.0.1
       valibot: 1.0.0(typescript@5.5.2)
+    transitivePeerDependencies:
+      - typescript
+
+  '@telegram-apps/init-data-node@2.0.10(typescript@5.5.2)':
+    dependencies:
+      '@telegram-apps/transformers': 2.2.6(typescript@5.5.2)
+      '@telegram-apps/types': 2.0.3
+      error-kid: 0.0.7
     transitivePeerDependencies:
       - typescript
 
@@ -2562,6 +2603,8 @@ snapshots:
 
   '@telegram-apps/toolkit@2.1.2': {}
 
+  '@telegram-apps/toolkit@2.1.3': {}
+
   '@telegram-apps/transformers@1.2.2':
     dependencies:
       '@telegram-apps/toolkit': 1.1.1
@@ -2575,9 +2618,19 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@telegram-apps/transformers@2.2.6(typescript@5.5.2)':
+    dependencies:
+      '@telegram-apps/toolkit': 2.1.3
+      '@telegram-apps/types': 2.0.3
+      valibot: 1.0.0-beta.14(typescript@5.5.2)
+    transitivePeerDependencies:
+      - typescript
+
   '@telegram-apps/types@1.2.1': {}
 
   '@telegram-apps/types@2.0.0': {}
+
+  '@telegram-apps/types@2.0.3': {}
 
   '@tonconnect/isomorphic-eventsource@0.0.2':
     dependencies:
@@ -3124,8 +3177,8 @@ snapshots:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.0)(typescript@5.5.2)
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.34.3(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
@@ -3143,13 +3196,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0):
+  eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0):
     dependencies:
       debug: 4.3.5
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
       is-core-module: 2.14.0
@@ -3160,18 +3213,18 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.0)(typescript@5.5.2)
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0)
+      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
@@ -3181,7 +3234,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.14.0
       is-glob: 4.0.3

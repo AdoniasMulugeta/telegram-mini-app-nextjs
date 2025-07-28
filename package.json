@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
+    "@telegram-apps/init-data-node": "^2.0.10",
     "@telegram-apps/sdk-react": "^3.2.4",
     "@telegram-apps/telegram-ui": "^2.1.5",
     "@tonconnect/ui-react": "^2.1.0",
