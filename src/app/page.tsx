@@ -8,16 +8,11 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher/LocaleSwitcher";
 import { Page } from "@/components/Page";
 
 import tonSvg from "./_assets/ton.svg";
-import { useFetchMe } from "@/hooks/useFetchMe";
-import { useEffect } from "react";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Home() {
   const t = useTranslations("i18n");
-  const { user, loading, error, fetchMe } = useFetchMe();
-
-  useEffect(() => {
-    fetchMe();
-  }, []);
+  const { data: user, isLoading, error } = useUser();
 
   return (
     <Page back={false}>

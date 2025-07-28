@@ -9,13 +9,24 @@ import {
 } from '@telegram-apps/sdk-react';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { AppRoot } from '@telegram-apps/telegram-ui';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorPage } from '@/components/ErrorPage';
 import { useDidMount } from '@/hooks/useDidMount';
 import { setLocale } from '@/core/i18n/locale';
+import { UserProvider } from '@/contexts/UserContext';
 
 import './styles.css';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 function RootInner({ children }: PropsWithChildren) {
   const lp = useLaunchParams();
@@ -29,16 +40,20 @@ function RootInner({ children }: PropsWithChildren) {
   }, [initDataUser]);
 
   return (
-    <TonConnectUIProvider manifestUrl="/tonconnect-manifest.json">
-      <AppRoot
-        appearance={isDark ? 'dark' : 'light'}
-        platform={
-          ['macos', 'ios'].includes(lp.tgWebAppPlatform) ? 'ios' : 'base'
-        }
-      >
-        {children}
-      </AppRoot>
-    </TonConnectUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <TonConnectUIProvider manifestUrl="/tonconnect-manifest.json">
+          <AppRoot
+            appearance={isDark ? 'dark' : 'light'}
+            platform={
+              ['macos', 'ios'].includes(lp.tgWebAppPlatform) ? 'ios' : 'base'
+            }
+          >
+            {children}
+          </AppRoot>
+        </TonConnectUIProvider>
+      </UserProvider>
+    </QueryClientProvider>
   );
 }
 

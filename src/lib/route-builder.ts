@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User as TelegramUser } from "@telegram-apps/init-data-node";
-import { validateTelegramAuth } from "./validate-request";
+import { validateTelegramAuth } from "./validate-telegram-data";
 
 // Context types that can be accumulated through the builder chain
 interface BaseContext {
@@ -8,7 +8,7 @@ interface BaseContext {
 }
 
 interface TelegramAuthContext extends BaseContext {
-  user: TelegramUser;
+  telegramUser: TelegramUser;
 }
 
 interface RateLimitContext {
@@ -90,27 +90,29 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
   > = [];
 
   // Add Telegram authentication
-  withTelegramAuth(): RouteBuilder<MergeContext<TContext, TelegramAuthContext>> {
+  withTelegramAuth(): RouteBuilder<
+    MergeContext<TContext, TelegramAuthContext>
+  > {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, TelegramAuthContext>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         const authResult = await validateTelegramAuth(request);
-        
+
         if (!authResult.isValid) {
           throw authResult.response;
         }
-        
+
         return {
           ...context,
-          user: authResult.user,
+          telegramUser: authResult.telegramUser,
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -121,14 +123,14 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, RateLimitContext>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         // Simple in-memory rate limiting (in production, use Redis or similar)
         const ip = request.headers.get("x-forwarded-for") || "unknown";
         const key = `ratelimit:${ip}`;
-        
+
         // For demo purposes, we'll just add the rate limit info
         // In a real implementation, you'd check against a store
         return {
@@ -141,7 +143,7 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -150,34 +152,34 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     options: CorsOptions
   ): RouteBuilder<MergeContext<TContext, CorsContext>> {
     const newBuilder = new RouteBuilder<MergeContext<TContext, CorsContext>>();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         const origin = request.headers.get("origin") || "";
-        const allowedOrigin = options.origins.includes("*") 
-          ? "*" 
-          : options.origins.find(o => o === origin) || "";
-        
+        const allowedOrigin = options.origins.includes("*")
+          ? "*"
+          : options.origins.find((o) => o === origin) || "";
+
         const corsHeaders: HeadersInit = {
           "Access-Control-Allow-Origin": allowedOrigin,
-          "Access-Control-Allow-Methods": 
+          "Access-Control-Allow-Methods":
             options.methods?.join(", ") || "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": 
+          "Access-Control-Allow-Headers":
             options.headers?.join(", ") || "Content-Type, Authorization",
         };
-        
+
         if (options.credentials) {
           corsHeaders["Access-Control-Allow-Credentials"] = "true";
         }
-        
+
         return {
           ...context,
           corsHeaders,
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -188,14 +190,14 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, ValidationContext<T>>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         try {
           const body = await request.json();
           const validated = schema.parse(body);
-          
+
           return {
             ...context,
             validated,
@@ -208,7 +210,7 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
         }
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -217,14 +219,12 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     options: CacheOptions
   ): RouteBuilder<MergeContext<TContext, CacheContext>> {
     const newBuilder = new RouteBuilder<MergeContext<TContext, CacheContext>>();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
-        const key = options.key 
-          ? options.key(request) 
-          : request.url;
-        
+        const key = options.key ? options.key(request) : request.url;
+
         return {
           ...context,
           cache: {
@@ -234,14 +234,16 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
   // Parse request body
   withBody<T = any>(): RouteBuilder<MergeContext<TContext, BodyContext<T>>> {
-    const newBuilder = new RouteBuilder<MergeContext<TContext, BodyContext<T>>>();
-    
+    const newBuilder = new RouteBuilder<
+      MergeContext<TContext, BodyContext<T>>
+    >();
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
@@ -259,7 +261,7 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
         }
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -270,24 +272,24 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, QueryParamsContext<T>>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         const { searchParams } = new URL(request.url);
         const query: any = {};
-        
+
         searchParams.forEach((value, key) => {
           query[key] = value;
         });
-        
+
         return {
           ...context,
           query: query as T,
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -298,41 +300,43 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, PathParamsContext<T>>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any, ...args: any[]) => {
         // In Next.js App Router, path params are passed as the second argument
         const params = args[0]?.params || {};
-        
+
         return {
           ...context,
           params: params as T,
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
   // Get raw search params
-  withSearchParams(): RouteBuilder<MergeContext<TContext, SearchParamsContext>> {
+  withSearchParams(): RouteBuilder<
+    MergeContext<TContext, SearchParamsContext>
+  > {
     const newBuilder = new RouteBuilder<
       MergeContext<TContext, SearchParamsContext>
     >();
-    
+
     newBuilder.middlewares = [
       ...this.middlewares,
       async (request: NextRequest, context: any) => {
         const { searchParams } = new URL(request.url);
-        
+
         return {
           ...context,
           searchParams,
         };
       },
     ];
-    
+
     return newBuilder;
   }
 
@@ -344,7 +348,7 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
       try {
         // Start with base context
         let context: any = { request };
-        
+
         // Run all middlewares in sequence
         for (const middleware of this.middlewares) {
           const result = await middleware(request, context, ...args);
@@ -354,31 +358,30 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
           }
           context = result;
         }
-        
+
         // Call the final handler with accumulated context
         const response = await handler(request, context);
-        
+
         // Add CORS headers if they exist
         if (context.corsHeaders) {
           const headers = new Headers(response.headers);
           Object.entries(context.corsHeaders).forEach(([key, value]) => {
             headers.set(key, value as string);
           });
-          
+
           return new NextResponse(response.body, {
             status: response.status,
             statusText: response.statusText,
             headers,
           });
         }
-        
+
         return response;
       } catch (error) {
-        // If error is already a Response, return it
         if (error instanceof Response || error instanceof NextResponse) {
           return error;
         }
-        
+
         // Otherwise, return a generic error response
         console.error("Route handler error:", error);
         return NextResponse.json(
