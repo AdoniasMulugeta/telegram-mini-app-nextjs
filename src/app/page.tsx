@@ -1,6 +1,6 @@
 "use client";
 
-import { Section, Cell, Image, List } from "@telegram-apps/telegram-ui";
+import { Section, Cell, Image, List, Avatar, Title, Text, Placeholder, Spinner } from "@telegram-apps/telegram-ui";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/components/Link/Link";
@@ -14,9 +14,65 @@ export default function Home() {
   const t = useTranslations("i18n");
   const { data: user, isLoading, error } = useUser();
 
+  if (isLoading) {
+    return (
+      <Page back={false}>
+        <Placeholder
+          header={<Spinner size="l" />}
+          description="Loading user information..."
+        />
+      </Page>
+    );
+  }
+
+  if (error) {
+    return (
+      <Page back={false}>
+        <Placeholder
+          header="Error"
+          description="Failed to load user information"
+        />
+      </Page>
+    );
+  }
+
   return (
     <Page back={false}>
       <List>
+        {user && (
+          <Section header="User Information" footer={`User ID: ${user.id}`}>
+            <Cell
+              before={
+                user.photo_url ? (
+                  <Avatar
+                    src={user.photo_url}
+                    alt={`${user.first_name}'s avatar`}
+                    width={60}
+                    height={60}
+                  />
+                ) : (
+                  <Avatar
+                    src=""
+                    alt="Default avatar"
+                    width={60}
+                    height={60}
+                    style={{ backgroundColor: "#007AFF" }}
+                  />
+                )
+              }
+              subtitle={user.username ? `@${user.username}` : "No username"}
+            >
+              <Title level="3">
+                {user.first_name} {user.last_name || ""}
+              </Title>
+            </Cell>
+            {user.is_premium && (
+              <Cell>
+                <Text>✨ Telegram Premium User</Text>
+              </Cell>
+            )}
+          </Section>
+        )}
         <Section
           header="Features"
           footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"

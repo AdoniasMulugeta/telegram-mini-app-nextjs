@@ -14,7 +14,7 @@ export const PUT = createRoute()
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    let user = await getUserByTelegramId(telegramUser.id);
+    let user = await getUserByTelegramId(telegramUser.id.toString());
 
     if (!user) {
       user = await createUserFromTelegram(telegramUser);

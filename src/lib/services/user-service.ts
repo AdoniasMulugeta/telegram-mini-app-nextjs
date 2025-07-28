@@ -55,7 +55,7 @@ export const createUserFromTelegram = async (userData: TelegramUserData) => {
   await prisma.telegramUser.create({
     data: {
       id: randomUUID(),
-      telegramId: userData.id,
+      telegramId: userData.id.toString(),
       firstName: userData.first_name,
       lastName: userData.last_name ?? "",
       username: userData.username ?? "",
@@ -85,7 +85,7 @@ export const getUserById = async (id: string) => {
   });
 };
 
-export const getUserByTelegramId = async (telegramId: number) => {
+export const getUserByTelegramId = async (telegramId: string) => {
   return prisma.user.findFirst({
     where: {
       telegramUser: {

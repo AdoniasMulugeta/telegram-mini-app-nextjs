@@ -32,7 +32,7 @@ model User {
 
 model TelegramUser {
   id           String   @id
-  telegramId   Int      @unique
+  telegramId   String   @unique
   username     String   @unique
   firstName    String?
   lastName     String?
