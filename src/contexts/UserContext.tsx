@@ -2,17 +2,23 @@
 
 import { createContext, useContext, type PropsWithChildren } from "react";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { User as TelegramUser } from "@telegram-apps/sdk-react";
 import apiClient from "@/lib/api-client";
 import { initData } from "@telegram-apps/sdk-react";
+import { Prisma } from "@prisma/client";
+
+type UserWithTelegram = Prisma.UserGetPayload<{
+  include: {
+    telegramUser: true;
+  };
+}>;
 
 interface UserContextValue {
-  userQuery: UseQueryResult<TelegramUser | null, Error>;
+  userQuery: UseQueryResult<UserWithTelegram | null, Error>;
 }
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
-async function fetchUser(): Promise<TelegramUser | null> {
+async function fetchUser(): Promise<UserWithTelegram | null> {
   const telegramUser = initData.user();
   if (!telegramUser) {
     return null;

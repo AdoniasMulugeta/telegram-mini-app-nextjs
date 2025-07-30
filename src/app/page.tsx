@@ -1,17 +1,21 @@
 "use client";
 
-import { Section, Cell, Image, List, Avatar, Title, Text, Placeholder, Spinner } from "@telegram-apps/telegram-ui";
-import { useTranslations } from "next-intl";
-
-import { Link } from "@/components/Link/Link";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher/LocaleSwitcher";
+import {
+  Section,
+  Cell,
+  List,
+  Avatar,
+  Title,
+  Text,
+  Placeholder,
+  Spinner,
+  Input,
+  IconContainer,
+} from "@telegram-apps/telegram-ui";
 import { Page } from "@/components/Page";
-
-import tonSvg from "./_assets/ton.svg";
 import { useUser } from "@/contexts/UserContext";
 
 export default function Home() {
-  const t = useTranslations("i18n");
   const { data: user, isLoading, error } = useUser();
 
   if (isLoading) {
@@ -36,86 +40,133 @@ export default function Home() {
     );
   }
 
+  const staticBots = [
+    {
+      id: 1,
+      name: "meeni_meet_bot",
+      username: "tiny_meet_bot",
+      initial: "M",
+      color: "#90C979",
+    },
+    {
+      id: 2,
+      name: "etma",
+      username: "Tma_et_bot",
+      initial: "E",
+      color: "#90C979",
+    },
+    {
+      id: 3,
+      name: "Quizzy",
+      username: "quizzy_ai_bot",
+      initial: "Q",
+      color: "#FF9F40",
+    },
+    {
+      id: 4,
+      name: "wagabot",
+      username: "wagaet_bot",
+      initial: "W",
+      color: "#A78BFA",
+    },
+    {
+      id: 5,
+      name: "Liyou Store",
+      username: "liyoustore_bot",
+      initial: "LS",
+      color: "#5EEAD4",
+    },
+    {
+      id: 6,
+      name: "LABA FINANCE BOT",
+      username: "LABA_FINANCE_BOT",
+      initial: "LB",
+      color: "#5EEAD4",
+    },
+  ];
+
   return (
     <Page back={false}>
-      <List>
+      <div style={{ padding: "16px 0" }}>
         {user && (
-          <Section header="User Information" footer={`User ID: ${user.id}`}>
-            <Cell
-              before={
-                user.photo_url ? (
-                  <Avatar
-                    src={user.photo_url}
-                    alt={`${user.first_name}'s avatar`}
-                    width={60}
-                    height={60}
-                  />
-                ) : (
-                  <Avatar
-                    src=""
-                    alt="Default avatar"
-                    width={60}
-                    height={60}
-                    style={{ backgroundColor: "#007AFF" }}
-                  />
-                )
-              }
-              subtitle={user.username ? `@${user.username}` : "No username"}
-            >
-              <Title level="3">
-                {user.first_name} {user.last_name || ""}
-              </Title>
-            </Cell>
-            {user.is_premium && (
-              <Cell>
-                <Text>✨ Telegram Premium User</Text>
-              </Cell>
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <Avatar
+              src={user.telegramUser?.photoUrl || ""}
+              alt={`${user.name}'s avatar`}
+              size={96}
+              style={{
+                margin: "0 auto 16px",
+                backgroundColor: user.telegramUser?.photoUrl
+                  ? undefined
+                  : "#007AFF",
+              }}
+            />
+            <Title level="1" weight="1" style={{ marginBottom: 8 }}>
+              {user.name}
+            </Title>
+            {user.telegramUser?.username && (
+              <Text
+                weight="3"
+                style={{ color: "var(--tgui--hint_color)", marginBottom: 8 }}
+              >
+                @{user.telegramUser?.username}
+              </Text>
             )}
-          </Section>
+          </div>
         )}
-        <Section
-          header="Features"
-          footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"
-        >
-          <Link href="/ton-connect">
+
+        <div style={{ padding: "0 16px 16px" }}>
+          <Input placeholder="Search" style={{ marginBottom: 16 }} />
+        </div>
+
+        <List>
+          <Section header="My bots">
             <Cell
               before={
-                <Image
-                  src={tonSvg.src}
-                  style={{ backgroundColor: "#007AFF" }}
-                  alt="TON Logo"
-                />
+                <IconContainer
+                  style={{ backgroundColor: "var(--tgui--accent_text_color)" }}
+                >
+                  {/* <Icon24Add style={{ color: "white" }} /> */}
+                </IconContainer>
               }
-              subtitle="Connect your TON wallet"
+              onClick={() => {}}
             >
-              TON Connect
+              Create a New Bot
             </Cell>
-          </Link>
-        </Section>
-        <Section
-          header="Application Launch Data"
-          footer="These pages help developer to learn more about current launch information"
-        >
-          <Link href="/init-data">
-            <Cell subtitle="User data, chat information, technical data">
-              Init Data
-            </Cell>
-          </Link>
-          <Link href="/launch-params">
-            <Cell subtitle="Platform identifier, Mini Apps version, etc.">
-              Launch Parameters
-            </Cell>
-          </Link>
-          <Link href="/theme-params">
-            <Cell subtitle="Telegram application palette information">
-              Theme Parameters
-            </Cell>
-          </Link>
-        </Section>
-        <Section header={t("header")} footer={t("footer")}>
-          <LocaleSwitcher />
-        </Section>
-      </List>
+
+            {staticBots.map((bot) => (
+              <Cell
+                key={bot.id}
+                before={
+                  <Avatar
+                    size={40}
+                    style={{
+                      backgroundColor: bot.color,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {bot.initial}
+                    </span>
+                  </Avatar>
+                }
+                subtitle={`@${bot.username}`}
+                onClick={() => {}}
+              >
+                {bot.name}
+              </Cell>
+            ))}
+          </Section>
+        </List>
+      </div>
     </Page>
   );
 }
