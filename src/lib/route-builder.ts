@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User as TelegramUser } from "@telegram-apps/init-data-node";
 import { validateTelegramAuth } from "./validate-telegram-data";
+import logger from "./util/logger";
 
 // Context types that can be accumulated through the builder chain
 interface BaseContext {
@@ -376,6 +377,11 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
           });
         }
 
+        if (process.env.NODE_ENV === "development") {
+          const responseData = await extractResponse(response);
+          logger.info(responseData);
+        }
+
         return response;
       } catch (error) {
         if (error instanceof Response || error instanceof NextResponse) {
@@ -383,7 +389,7 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
         }
 
         // Otherwise, return a generic error response
-        console.error("Route handler error:", error);
+        logger.error("Route handler error:", error);
         return NextResponse.json(
           { error: "Internal server error" },
           { status: 500 }
@@ -396,4 +402,25 @@ export class RouteBuilder<TContext extends BaseContext = BaseContext> {
 // Helper function to create a new builder instance
 export function createRoute() {
   return new RouteBuilder();
+}
+
+// Helper function to extract and log response content
+async function extractResponse(response: Response): Promise<any> {
+  let responseData = null;
+  try {
+    if (response.body) {
+      const clonedResponse = response.clone();
+      responseData = await clonedResponse.json();
+    }
+  } catch (error) {
+    // If it's not JSON, try to get as text
+    try {
+      const clonedResponse = response.clone();
+      responseData = await clonedResponse.text();
+    } catch (textError) {
+      responseData = "Unable to extract response content";
+    }
+  }
+
+  return responseData;
 }

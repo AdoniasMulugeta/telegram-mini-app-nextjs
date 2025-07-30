@@ -18,6 +18,7 @@ export const PUT = createRoute()
 
     if (!user) {
       user = await createUserFromTelegram(telegramUser);
+      return NextResponse.json({ user }, { status: 201 });
     }
 
     return NextResponse.json({ user });

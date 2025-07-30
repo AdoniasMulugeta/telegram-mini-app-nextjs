@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateInitData, parseUserFromInitData } from "@/lib/services/telegram-service";
 import { User as TelegramUser } from "@telegram-apps/init-data-node";
+import logger from "./util/logger";
 
 export interface AuthResult {
   isValid: boolean;
@@ -48,7 +49,7 @@ export async function validateTelegramAuth(request: NextRequest): Promise<AuthRe
       telegramUser
     };
   } catch (error) {
-    console.error("Auth validation error:", error);
+    logger.error("Auth validation error:", error);
     return {
       isValid: false,
       error: "Internal server error",
